@@ -1,0 +1,11 @@
+{
+  "projectName": "shopper2",
+  "mode": "file-router",
+  "typescript": true,
+  "tailwind": true,
+  "packageManager": "bun",
+  "git": true,
+  "version": 1,
+  "framework": "solid",
+  "chosenAddOns": ["form", "solid-ui", "start", "t3env", "tanstack-query"]
+}
