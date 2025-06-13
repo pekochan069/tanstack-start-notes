@@ -8,12 +8,30 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createServerRootRoute } from '@tanstack/solid-start/server'
+
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as BeforeSigninRouteImport } from './routes/_before-signin'
+import { Route as AuthorizedRouteImport } from './routes/_authorized'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DemoTanstackQueryRouteImport } from './routes/demo.tanstack-query'
-import { Route as DemoFormRouteImport } from './routes/demo.form'
+import { Route as BeforeSigninSignupRouteImport } from './routes/_before-signin/signup'
+import { Route as BeforeSigninSigninRouteImport } from './routes/_before-signin/signin'
+import { Route as AuthorizedNoteRouteRouteImport } from './routes/_authorized/note/route'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
+import { Route as AuthorizedNoteNoteIdEditRouteImport } from './routes/_authorized/note/$noteId/edit'
+import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
+const rootServerRouteImport = createServerRootRoute()
+
+const BeforeSigninRoute = BeforeSigninRouteImport.update({
+  id: '/_before-signin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthorizedRoute = AuthorizedRouteImport.update({
+  id: '/_authorized',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -24,58 +42,131 @@ const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
   path: '/demo/tanstack-query',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoFormRoute = DemoFormRouteImport.update({
-  id: '/demo/form',
-  path: '/demo/form',
-  getParentRoute: () => rootRouteImport,
+const BeforeSigninSignupRoute = BeforeSigninSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => BeforeSigninRoute,
+} as any)
+const BeforeSigninSigninRoute = BeforeSigninSigninRouteImport.update({
+  id: '/signin',
+  path: '/signin',
+  getParentRoute: () => BeforeSigninRoute,
+} as any)
+const AuthorizedNoteRouteRoute = AuthorizedNoteRouteRouteImport.update({
+  id: '/note',
+  path: '/note',
+  getParentRoute: () => AuthorizedRoute,
 } as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   id: '/demo/start/server-funcs',
   path: '/demo/start/server-funcs',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthorizedNoteNoteIdEditRoute =
+  AuthorizedNoteNoteIdEditRouteImport.update({
+    id: '/$noteId/edit',
+    path: '/$noteId/edit',
+    getParentRoute: () => AuthorizedNoteRouteRoute,
+  } as any)
+const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
+  id: '/api/auth/$',
+  path: '/api/auth/$',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/form': typeof DemoFormRoute
+  '': typeof BeforeSigninRouteWithChildren
+  '/note': typeof AuthorizedNoteRouteRouteWithChildren
+  '/signin': typeof BeforeSigninSigninRoute
+  '/signup': typeof BeforeSigninSignupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/note/$noteId/edit': typeof AuthorizedNoteNoteIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/form': typeof DemoFormRoute
+  '': typeof BeforeSigninRouteWithChildren
+  '/note': typeof AuthorizedNoteRouteRouteWithChildren
+  '/signin': typeof BeforeSigninSigninRoute
+  '/signup': typeof BeforeSigninSignupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/note/$noteId/edit': typeof AuthorizedNoteNoteIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/form': typeof DemoFormRoute
+  '/_authorized': typeof AuthorizedRouteWithChildren
+  '/_before-signin': typeof BeforeSigninRouteWithChildren
+  '/_authorized/note': typeof AuthorizedNoteRouteRouteWithChildren
+  '/_before-signin/signin': typeof BeforeSigninSigninRoute
+  '/_before-signin/signup': typeof BeforeSigninSignupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
+  '/_authorized/note/$noteId/edit': typeof AuthorizedNoteNoteIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/demo/form'
+    | ''
+    | '/note'
+    | '/signin'
+    | '/signup'
     | '/demo/tanstack-query'
     | '/demo/start/server-funcs'
+    | '/note/$noteId/edit'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/demo/form' | '/demo/tanstack-query' | '/demo/start/server-funcs'
+  to:
+    | '/'
+    | ''
+    | '/note'
+    | '/signin'
+    | '/signup'
+    | '/demo/tanstack-query'
+    | '/demo/start/server-funcs'
+    | '/note/$noteId/edit'
   id:
     | '__root__'
     | '/'
-    | '/demo/form'
+    | '/_authorized'
+    | '/_before-signin'
+    | '/_authorized/note'
+    | '/_before-signin/signin'
+    | '/_before-signin/signup'
     | '/demo/tanstack-query'
     | '/demo/start/server-funcs'
+    | '/_authorized/note/$noteId/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoFormRoute: typeof DemoFormRoute
+  AuthorizedRoute: typeof AuthorizedRouteWithChildren
+  BeforeSigninRoute: typeof BeforeSigninRouteWithChildren
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/api/auth/$': typeof ApiAuthSplatServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths: '/api/auth/$'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to: '/api/auth/$'
+  id: '__root__' | '/api/auth/$'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  ApiAuthSplatServerRoute: typeof ApiAuthSplatServerRoute
 }
 
 declare module '@tanstack/solid-router' {
@@ -87,18 +178,53 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/form': {
-      id: '/demo/form'
-      path: '/demo/form'
-      fullPath: '/demo/form'
-      preLoaderRoute: typeof DemoFormRouteImport
+    '/_authorized': {
+      id: '/_authorized'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthorizedRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_before-signin': {
+      id: '/_before-signin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof BeforeSigninRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authorized/note': {
+      id: '/_authorized/note'
+      path: '/note'
+      fullPath: '/note'
+      preLoaderRoute: typeof AuthorizedNoteRouteRouteImport
+      parentRoute: typeof AuthorizedRoute
+    }
+    '/_before-signin/signin': {
+      id: '/_before-signin/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: typeof BeforeSigninSigninRouteImport
+      parentRoute: typeof BeforeSigninRoute
+    }
+    '/_before-signin/signup': {
+      id: '/_before-signin/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof BeforeSigninSignupRouteImport
+      parentRoute: typeof BeforeSigninRoute
     }
     '/demo/tanstack-query': {
       id: '/demo/tanstack-query'
       path: '/demo/tanstack-query'
       fullPath: '/demo/tanstack-query'
       preLoaderRoute: typeof DemoTanstackQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: ''
+      fullPath: '/api/auth/$'
+      preLoaderRoute: unknown
       parentRoute: typeof rootRouteImport
     }
     '/demo/start/server-funcs': {
@@ -108,15 +234,140 @@ declare module '@tanstack/solid-router' {
       preLoaderRoute: typeof DemoStartServerFuncsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authorized/note/$noteId/edit': {
+      id: '/_authorized/note/$noteId/edit'
+      path: '/$noteId/edit'
+      fullPath: '/note/$noteId/edit'
+      preLoaderRoute: typeof AuthorizedNoteNoteIdEditRouteImport
+      parentRoute: typeof AuthorizedNoteRouteRoute
+    }
+  }
+}
+declare module '@tanstack/solid-start/server' {
+  interface ServerFileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/_authorized': {
+      id: '/_authorized'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/_before-signin': {
+      id: '/_before-signin'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/_authorized/note': {
+      id: '/_authorized/note'
+      path: '/note'
+      fullPath: '/note'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/_before-signin/signin': {
+      id: '/_before-signin/signin'
+      path: '/signin'
+      fullPath: '/signin'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/_before-signin/signup': {
+      id: '/_before-signin/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/demo/tanstack-query': {
+      id: '/demo/tanstack-query'
+      path: '/demo/tanstack-query'
+      fullPath: '/demo/tanstack-query'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/api/auth/$': {
+      id: '/api/auth/$'
+      path: '/api/auth/$'
+      fullPath: '/api/auth/$'
+      preLoaderRoute: typeof ApiAuthSplatServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/demo/start/server-funcs': {
+      id: '/demo/start/server-funcs'
+      path: '/demo/start/server-funcs'
+      fullPath: '/demo/start/server-funcs'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
+    '/_authorized/note/$noteId/edit': {
+      id: '/_authorized/note/$noteId/edit'
+      path: '/$noteId/edit'
+      fullPath: '/note/$noteId/edit'
+      preLoaderRoute: unknown
+      parentRoute: typeof rootServerRouteImport
+    }
   }
 }
 
+interface AuthorizedNoteRouteRouteChildren {
+  AuthorizedNoteNoteIdEditRoute: typeof AuthorizedNoteNoteIdEditRoute
+}
+
+const AuthorizedNoteRouteRouteChildren: AuthorizedNoteRouteRouteChildren = {
+  AuthorizedNoteNoteIdEditRoute: AuthorizedNoteNoteIdEditRoute,
+}
+
+const AuthorizedNoteRouteRouteWithChildren =
+  AuthorizedNoteRouteRoute._addFileChildren(AuthorizedNoteRouteRouteChildren)
+
+interface AuthorizedRouteChildren {
+  AuthorizedNoteRouteRoute: typeof AuthorizedNoteRouteRouteWithChildren
+}
+
+const AuthorizedRouteChildren: AuthorizedRouteChildren = {
+  AuthorizedNoteRouteRoute: AuthorizedNoteRouteRouteWithChildren,
+}
+
+const AuthorizedRouteWithChildren = AuthorizedRoute._addFileChildren(
+  AuthorizedRouteChildren,
+)
+
+interface BeforeSigninRouteChildren {
+  BeforeSigninSigninRoute: typeof BeforeSigninSigninRoute
+  BeforeSigninSignupRoute: typeof BeforeSigninSignupRoute
+}
+
+const BeforeSigninRouteChildren: BeforeSigninRouteChildren = {
+  BeforeSigninSigninRoute: BeforeSigninSigninRoute,
+  BeforeSigninSignupRoute: BeforeSigninSignupRoute,
+}
+
+const BeforeSigninRouteWithChildren = BeforeSigninRoute._addFileChildren(
+  BeforeSigninRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoFormRoute: DemoFormRoute,
+  AuthorizedRoute: AuthorizedRouteWithChildren,
+  BeforeSigninRoute: BeforeSigninRouteWithChildren,
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiAuthSplatServerRoute: ApiAuthSplatServerRoute,
+}
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()

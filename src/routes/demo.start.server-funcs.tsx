@@ -1,6 +1,6 @@
-import * as fs from "fs";
 import { createFileRoute, useRouter } from "@tanstack/solid-router";
 import { createServerFn } from "@tanstack/solid-start";
+import * as fs from "fs";
 
 const filePath = "count.txt";
 
@@ -35,6 +35,7 @@ function Home() {
   return (
     <div class="p-4">
       <button
+        type="button"
         onClick={() => {
           updateCount({ data: 1 }).then(() => {
             router.invalidate();
@@ -42,7 +43,7 @@ function Home() {
         }}
         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
-        Add 1 to {state}?
+        Add 1 to {state()}?
       </button>
     </div>
   );

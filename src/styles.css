@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+@plugin "@kobalte/tailwindcss";
 @custom-variant dark (&:is(.dark *));
 
 body {
@@ -51,6 +51,14 @@ code {
   --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
   --sidebar-border: oklch(0.92 0.004 286.32);
   --sidebar-ring: oklch(0.871 0.006 286.286);
+  --info: oklch(0.95 0.024 236.81);
+  --info-foreground: oklch(0.68 0.148143 238.1044);
+  --success: oklch(0.95 0.0506 162.83);
+  --success-foreground: oklch(0.69 0.1481 162.37);
+  --warning: oklch(0.96 0.0569 95.61);
+  --warning-foreground: oklch(0.71 0.186 48.13);
+  --error: oklch(0.93 0.0314 17.73);
+  --error-foreground: oklch(0.64 0.2082 25.38);
 }
 
 .dark {
@@ -86,6 +94,14 @@ code {
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(0.274 0.006 286.033);
   --sidebar-ring: oklch(0.442 0.017 285.786);
+  --info: oklch(0.28 0.0875 267.91);
+  --info-foreground: oklch(0.68 0.148143 238.1044);
+  --success: oklch(0.26 0.0487 172.54);
+  --success-foreground: oklch(0.69 0.1481 162.37);
+  --warning: oklch(0.29 0.0638 53.82);
+  --warning-foreground: oklch(0.71 0.186 48.13);
+  --error: oklch(0.26 0.0886 26.05);
+  --error-foreground: oklch(0.64 0.2082 25.38);
 }
 
 @theme inline {
@@ -125,6 +141,80 @@ code {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
+
+  --ease-default: cubic-bezier(0.8, 0, 0.25, 0.9);
+  --ease-quart-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --ease-expo-in-out-custom: cubic-bezier(0.8, 0, 0.25, 0.9);
+
+  --container-8xl: 88rem;
+  --container-9xl: 96rem;
+  --container-10xl: 104rem;
+  --container-11xl: 112rem;
+  --container-12xl: 120rem;
+  --container-13xl: 128rem;
+  --container-14xl: 136rem;
+  --container-15xl: 144rem;
+  --container-16xl: 152rem;
+  --container-17xl: 160rem;
+  --container-18xl: 168rem;
+  --container-19xl: 176rem;
+  --container-20xl: 184rem;
+  --container-21xl: 192rem;
+  --container-22xl: 200rem;
+  --container-23xl: 208rem;
+  --container-24xl: 216rem;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--kb-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--kb-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+
+  @keyframes content-show {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes content-hide {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    to {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
 }
 
 @layer base {

@@ -4,12 +4,16 @@ import { createRouter as createTanstackRouter } from "@tanstack/solid-router";
 import { routeTree } from "./routeTree.gen";
 
 import "./styles.css";
+import type { User } from "./lib/db/schema";
 
 // Create a new router instance
 export const createRouter = () => {
   const router = createTanstackRouter({
     routeTree,
     scrollRestoration: true,
+    context: {
+      user: null as User | null, // Initialize user context as null
+    },
   });
   return router;
 };
