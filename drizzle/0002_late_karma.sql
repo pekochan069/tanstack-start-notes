@@ -1,0 +1,1 @@
+ALTER TABLE "note" ADD COLUMN "thumbnail" text DEFAULT '' NOT NULL;

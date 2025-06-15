@@ -4,12 +4,7 @@ import { createServerFn } from "@tanstack/solid-start";
 import { Show } from "solid-js";
 import { toast } from "solid-sonner";
 import { Button } from "~/components/ui/button";
-import {
-  TextField,
-  TextFieldErrorMessage,
-  TextFieldInput,
-  TextFieldLabel,
-} from "~/components/ui/text-field";
+import { TextField, TextFieldErrorMessage, TextFieldInput, TextFieldLabel } from "~/components/ui/text-field";
 import { SvgSpinners3DotsMove } from "~/icons/svg-spinners/3-dots-move";
 import { auth } from "~/lib/auth";
 
@@ -59,7 +54,7 @@ export default function SignupForm() {
         });
 
         navigate({
-          to: "/",
+          to: "/notes",
         });
       } catch {
         toast.error(`Signup failed`);
@@ -93,18 +88,11 @@ export default function SignupForm() {
               <TextField
                 value={field().state.value}
                 onChange={field().handleChange}
-                validationState={
-                  field().state.meta.errors.length > 0 ? "invalid" : "valid"
-                }
+                validationState={field().state.meta.errors.length > 0 ? "invalid" : "valid"}
               >
                 <TextFieldLabel>Email</TextFieldLabel>
-                <TextFieldInput
-                  type="email"
-                  placeholder="example@example.com"
-                />
-                <TextFieldErrorMessage>
-                  {field().state.meta.errors.join(",")}
-                </TextFieldErrorMessage>
+                <TextFieldInput type="email" placeholder="example@example.com" />
+                <TextFieldErrorMessage>{field().state.meta.errors.join(",")}</TextFieldErrorMessage>
               </TextField>
             )}
           </form.Field>
@@ -128,15 +116,11 @@ export default function SignupForm() {
               <TextField
                 value={field().state.value}
                 onChange={field().handleChange}
-                validationState={
-                  field().state.meta.errors.length > 0 ? "invalid" : "valid"
-                }
+                validationState={field().state.meta.errors.length > 0 ? "invalid" : "valid"}
               >
                 <TextFieldLabel>Password</TextFieldLabel>
                 <TextFieldInput type="password" placeholder="********" />
-                <TextFieldErrorMessage>
-                  {field().state.meta.errors.join(",")}
-                </TextFieldErrorMessage>
+                <TextFieldErrorMessage>{field().state.meta.errors.join(",")}</TextFieldErrorMessage>
               </TextField>
             )}
           </form.Field>
@@ -166,15 +150,11 @@ export default function SignupForm() {
               <TextField
                 value={field().state.value}
                 onChange={field().handleChange}
-                validationState={
-                  field().state.meta.errors.length > 0 ? "invalid" : "valid"
-                }
+                validationState={field().state.meta.errors.length > 0 ? "invalid" : "valid"}
               >
                 <TextFieldLabel>Confirm Password</TextFieldLabel>
                 <TextFieldInput type="password" placeholder="********" />
-                <TextFieldErrorMessage>
-                  {field().state.meta.errors.join(",")}
-                </TextFieldErrorMessage>
+                <TextFieldErrorMessage>{field().state.meta.errors.join(",")}</TextFieldErrorMessage>
               </TextField>
             )}
           </form.Field>
@@ -198,15 +178,11 @@ export default function SignupForm() {
               <TextField
                 value={field().state.value}
                 onChange={field().handleChange}
-                validationState={
-                  field().state.meta.errors.length > 0 ? "invalid" : "valid"
-                }
+                validationState={field().state.meta.errors.length > 0 ? "invalid" : "valid"}
               >
                 <TextFieldLabel>Name</TextFieldLabel>
                 <TextFieldInput placeholder="Username" />
-                <TextFieldErrorMessage>
-                  {field().state.meta.errors.join(",")}
-                </TextFieldErrorMessage>
+                <TextFieldErrorMessage>{field().state.meta.errors.join(",")}</TextFieldErrorMessage>
               </TextField>
             )}
           </form.Field>
@@ -221,14 +197,10 @@ export default function SignupForm() {
               </Button>
             )}
           </form.Subscribe>
-          <form.Subscribe
-            selector={(state) => [state.isSubmitted, state.isSubmitSuccessful]}
-          >
+          <form.Subscribe selector={(state) => [state.isSubmitted, state.isSubmitSuccessful]}>
             {(states) => (
               <Show when={states()[0] && !states()[1]}>
-                <p class="text-sm text-error-foreground">
-                  Signup failed due to server error.
-                </p>
+                <p class="text-sm text-error-foreground">Signup failed due to server error.</p>
               </Show>
             )}
           </form.Subscribe>

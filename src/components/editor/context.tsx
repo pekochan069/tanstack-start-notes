@@ -1,11 +1,11 @@
-import type { Content, Editor, EditorOptions } from "@tiptap/core";
-import type { Accessor, ParentProps } from "solid-js";
 import { debounce } from "@solid-primitives/scheduled";
+import type { Content, Editor, EditorOptions } from "@tiptap/core";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Typography } from "@tiptap/extension-typography";
 import { Underline } from "@tiptap/extension-underline";
 import StarterKit from "@tiptap/starter-kit";
+import type { Accessor, ParentProps } from "solid-js";
 import { createContext, mergeProps, useContext } from "solid-js";
 import { toast } from "solid-sonner";
 import { createEditor } from "tiptap-solid";
@@ -43,6 +43,7 @@ export interface EditorProviderProps extends Partial<EditorOptions> {
   throttle?: number;
   onBlur?: (content: Content) => void;
   onUpdate?: (content: Content) => void;
+  onThumbnailUpdate?: (thumbnail: string) => void;
 }
 
 export function EditorProvider(props: ParentProps<EditorProviderProps>) {
@@ -52,11 +53,19 @@ export function EditorProvider(props: ParentProps<EditorProviderProps>) {
       placeholder: "내용을 입력하세요...",
       throttle: 200,
     },
-    props,
+    props
   );
 
   const throttledUpdate = debounce((editor: Editor) => {
     props.onUpdate?.(getOutput(editor, props.output));
+    props.onThumbnailUpdate?.(
+      editor
+        .getText()
+        .split("\n")
+        .slice(0, 13)
+        .filter((_, i) => i % 2 === 0)
+        .join("\n")
+    );
   }, props.throttle);
 
   const onCreate = (editor: Editor) => {
@@ -65,8 +74,7 @@ export function EditorProvider(props: ParentProps<EditorProviderProps>) {
     }
   };
 
-  const onBlur = (editor: Editor) =>
-    props.onBlur?.(getOutput(editor, props.output));
+  const onBlur = (editor: Editor) => props.onBlur?.(getOutput(editor, props.output));
 
   const editor = createEditor({
     autofocus: true,
@@ -210,9 +218,5 @@ export function EditorProvider(props: ParentProps<EditorProviderProps>) {
     onUpdate: (props) => throttledUpdate(props.editor),
   });
 
-  return (
-    <EditorContext.Provider value={editor}>
-      {props.children}
-    </EditorContext.Provider>
-  );
+  return <EditorContext.Provider value={editor}>{props.children}</EditorContext.Provider>;
 }

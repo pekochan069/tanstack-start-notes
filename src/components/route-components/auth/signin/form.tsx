@@ -4,12 +4,7 @@ import { createServerFn } from "@tanstack/solid-start";
 import { Show } from "solid-js";
 import { toast } from "solid-sonner";
 import { Button } from "~/components/ui/button";
-import {
-  TextField,
-  TextFieldErrorMessage,
-  TextFieldInput,
-  TextFieldLabel,
-} from "~/components/ui/text-field";
+import { TextField, TextFieldErrorMessage, TextFieldInput, TextFieldLabel } from "~/components/ui/text-field";
 import { SvgSpinners3DotsMove } from "~/icons/svg-spinners/3-dots-move";
 import { auth } from "~/lib/auth";
 
@@ -23,7 +18,7 @@ const submit = createServerFn({ method: "POST" })
     };
   })
   .handler(async ({ data }) => {
-    const res = await auth.api.signInEmail({
+    await auth.api.signInEmail({
       body: {
         email: data.email,
         password: data.password,
@@ -49,7 +44,7 @@ export default function SigninForm() {
         });
 
         navigate({
-          to: "/",
+          to: "/notes",
         });
       } catch {
         toast.error(`Signin failed`);
@@ -83,18 +78,11 @@ export default function SigninForm() {
               <TextField
                 value={field().state.value}
                 onChange={field().handleChange}
-                validationState={
-                  field().state.meta.errors.length > 0 ? "invalid" : "valid"
-                }
+                validationState={field().state.meta.errors.length > 0 ? "invalid" : "valid"}
               >
                 <TextFieldLabel>Email</TextFieldLabel>
-                <TextFieldInput
-                  type="email"
-                  placeholder="example@example.com"
-                />
-                <TextFieldErrorMessage>
-                  {field().state.meta.errors.join(",")}
-                </TextFieldErrorMessage>
+                <TextFieldInput type="email" placeholder="example@example.com" />
+                <TextFieldErrorMessage>{field().state.meta.errors.join(",")}</TextFieldErrorMessage>
               </TextField>
             )}
           </form.Field>
@@ -120,15 +108,11 @@ export default function SigninForm() {
               <TextField
                 value={field().state.value}
                 onChange={field().handleChange}
-                validationState={
-                  field().state.meta.errors.length > 0 ? "invalid" : "valid"
-                }
+                validationState={field().state.meta.errors.length > 0 ? "invalid" : "valid"}
               >
                 <TextFieldLabel>Password</TextFieldLabel>
                 <TextFieldInput type="password" placeholder="********" />
-                <TextFieldErrorMessage>
-                  {field().state.meta.errors.join(",")}
-                </TextFieldErrorMessage>
+                <TextFieldErrorMessage>{field().state.meta.errors.join(",")}</TextFieldErrorMessage>
               </TextField>
             )}
           </form.Field>
@@ -143,14 +127,10 @@ export default function SigninForm() {
               </Button>
             )}
           </form.Subscribe>
-          <form.Subscribe
-            selector={(state) => [state.isSubmitted, state.isSubmitSuccessful]}
-          >
+          <form.Subscribe selector={(state) => [state.isSubmitted, state.isSubmitSuccessful]}>
             {(states) => (
               <Show when={states()[0] && !states()[1]}>
-                <p class="text-sm text-error-foreground">
-                  Sign In failed due to server error.
-                </p>
+                <p class="text-sm text-error-foreground">Sign In failed due to server error.</p>
               </Show>
             )}
           </form.Subscribe>

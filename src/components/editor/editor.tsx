@@ -1,6 +1,5 @@
 import "./styles/index.css";
 import type { Content, Editor } from "@tiptap/core";
-import type { EditorProviderProps } from "./context";
 import { Show } from "solid-js";
 import { EditorContent } from "tiptap-solid";
 import { cn } from "~/lib/utils";
@@ -11,12 +10,14 @@ import { SectionFour } from "./components/section/four";
 import { SectionOne } from "./components/section/one";
 import { SectionThree } from "./components/section/three";
 import { SectionTwo } from "./components/section/two";
+import type { EditorProviderProps } from "./context";
 import { useEditor } from "./context";
 
 interface EditorComponentProps extends EditorProviderProps {
   value?: Content;
   onChange?: (value: Content) => void;
   class?: string;
+  id?: string;
   editorContentClass?: string;
 }
 
@@ -29,14 +30,7 @@ const Toolbar = (props: { editor: Editor }) => (
 
       <SectionTwo
         editor={props.editor}
-        activeActions={[
-          "bold",
-          "italic",
-          "underline",
-          "strikethrough",
-          "code",
-          "clearFormatting",
-        ]}
+        activeActions={["bold", "italic", "underline", "strikethrough", "code", "clearFormatting"]}
         mainActionCount={3}
       />
 
@@ -46,11 +40,7 @@ const Toolbar = (props: { editor: Editor }) => (
 
       <Separator orientation="vertical" class="mx-2" />
 
-      <SectionFour
-        editor={props.editor}
-        activeActions={["orderedList", "bulletList"]}
-        mainActionCount={0}
-      />
+      <SectionFour editor={props.editor} activeActions={["orderedList", "bulletList"]} mainActionCount={0} />
 
       <Separator orientation="vertical" class="mx-2" />
 
@@ -74,7 +64,7 @@ export function EditorComponent(props: EditorComponentProps) {
         name="editor"
         class={cn(
           "min-data-[orientation=vertical]:h-72 flex h-auto w-full flex-col rounded-md border border-input shadow-xs focus-within:border-primary",
-          props.class,
+          props.class
         )}
       >
         <Toolbar editor={editor()!} />
@@ -83,6 +73,7 @@ export function EditorComponent(props: EditorComponentProps) {
           class={cn("minimal-tiptap-editor", props.editorContentClass)}
           onClick={() => editor()!.chain().focus().run()}
           ref={editorContentRef}
+          id={props.id}
         />
       </MeasuredContainer>
     </Show>
