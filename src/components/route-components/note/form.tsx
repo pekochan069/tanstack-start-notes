@@ -1,3 +1,4 @@
+import { debounce } from "@solid-primitives/scheduled";
 import { createServerFn, useServerFn } from "@tanstack/solid-start";
 import type { JSONContent } from "@tiptap/core";
 import { destr } from "destr";
@@ -60,9 +61,13 @@ export default function NoteForm(props: NoteFormProps) {
   const onTitleUpdate = useServerFn(onTitleUpdateFn);
   const onContentsUpdate = useServerFn(onNoteUpdateFn);
   const initialValue = destr<JSONContent>(props.note.contents);
+  const [titleInput, setTitleInput] = createSignal(props.note.title);
   const [title, setTitle] = createSignal(props.note.title);
-  const [value, setValue] = createSignal<JSONContent>(initialValue);
+  const debouncedTitle = debounce(setTitle, 500);
+  const [contents, setContents] = createSignal<JSONContent>(initialValue);
   const [thumbnail, setThumbnail] = createSignal("");
+
+  createEffect(() => debouncedTitle(titleInput()));
 
   createEffect(async () => {
     const currentTitle = title();
@@ -77,10 +82,8 @@ export default function NoteForm(props: NoteFormProps) {
   });
 
   createEffect(async () => {
-    const currentValue = value();
+    const currentValue = contents();
     if (currentValue === initialValue) return;
-
-    console.log(thumbnail());
 
     await onContentsUpdate({
       data: {
@@ -94,7 +97,7 @@ export default function NoteForm(props: NoteFormProps) {
   return (
     <div class="flex flex-col gap-4 h-[calc(100vh-53px)] px-6 pt-4 pb-6">
       <div>
-        <TextField value={title()} onChange={setTitle}>
+        <TextField value={titleInput()} onChange={setTitleInput}>
           <TextFieldLabel>Title</TextFieldLabel>
           <TextFieldInput />
         </TextField>
@@ -102,8 +105,8 @@ export default function NoteForm(props: NoteFormProps) {
       <div class="flex-1 flex flex-col gap-1">
         <Label>Note</Label>
         <div class="flex-1">
-          <EditorProvider value={value()} onUpdate={setValue} onThumbnailUpdate={setThumbnail}>
-            <EditorComponent output="json" throttle={500} class="h-full" />
+          <EditorProvider value={contents()} onUpdate={setContents} onThumbnailUpdate={setThumbnail}>
+            <EditorComponent output="json" throttle={500} class="h-full" editorContentClass="h-full" />
           </EditorProvider>
         </div>
       </div>

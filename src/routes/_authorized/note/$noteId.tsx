@@ -6,7 +6,7 @@ import { db } from "~/lib/db";
 import { note } from "~/lib/db/schema";
 import { authMiddleware } from "~/lib/middleware/auth";
 
-const getNote = createServerFn({
+const getNoteFn = createServerFn({
   method: "GET",
 })
   .middleware([authMiddleware])
@@ -14,7 +14,7 @@ const getNote = createServerFn({
     // @ts-ignore
     return data as string;
   })
-  .handler(async ({ context, data }) => {
+  .handler(async ({ data }) => {
     const currentNote = await db.select().from(note).where(eq(note.id, data));
 
     if (currentNote.length === 0) {
@@ -26,9 +26,12 @@ const getNote = createServerFn({
 
 export const Route = createFileRoute("/_authorized/note/$noteId")({
   component: RouteComponent,
+  // loader: ({ params }) => params.noteId,
   loader: async ({ params }) => {
-    return await getNote({ data: params.noteId });
+    return await getNoteFn({ data: params.noteId });
   },
+  staleTime: 0,
+  gcTime: 0,
 });
 
 function RouteComponent() {

@@ -19,7 +19,7 @@ import { Route as BeforeSigninSignupRouteImport } from './routes/_before-signin/
 import { Route as BeforeSigninSigninRouteImport } from './routes/_before-signin/signin'
 import { Route as AuthorizedNotesRouteImport } from './routes/_authorized/notes'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo.start.server-funcs'
-import { Route as AuthorizedNoteNoteIdRouteRouteImport } from './routes/_authorized/note/$noteId/route'
+import { Route as AuthorizedNoteNoteIdRouteImport } from './routes/_authorized/note/$noteId'
 import { ServerRoute as ApiAuthSplatServerRouteImport } from './routes/api/auth/$'
 
 const rootServerRouteImport = createServerRootRoute()
@@ -62,12 +62,11 @@ const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   path: '/demo/start/server-funcs',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthorizedNoteNoteIdRouteRoute =
-  AuthorizedNoteNoteIdRouteRouteImport.update({
-    id: '/note/$noteId',
-    path: '/note/$noteId',
-    getParentRoute: () => AuthorizedRoute,
-  } as any)
+const AuthorizedNoteNoteIdRoute = AuthorizedNoteNoteIdRouteImport.update({
+  id: '/note/$noteId',
+  path: '/note/$noteId',
+  getParentRoute: () => AuthorizedRoute,
+} as any)
 const ApiAuthSplatServerRoute = ApiAuthSplatServerRouteImport.update({
   id: '/api/auth/$',
   path: '/api/auth/$',
@@ -81,7 +80,7 @@ export interface FileRoutesByFullPath {
   '/signin': typeof BeforeSigninSigninRoute
   '/signup': typeof BeforeSigninSignupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/note/$noteId': typeof AuthorizedNoteNoteIdRouteRoute
+  '/note/$noteId': typeof AuthorizedNoteNoteIdRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 export interface FileRoutesByTo {
@@ -91,7 +90,7 @@ export interface FileRoutesByTo {
   '/signin': typeof BeforeSigninSigninRoute
   '/signup': typeof BeforeSigninSignupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/note/$noteId': typeof AuthorizedNoteNoteIdRouteRoute
+  '/note/$noteId': typeof AuthorizedNoteNoteIdRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 export interface FileRoutesById {
@@ -103,7 +102,7 @@ export interface FileRoutesById {
   '/_before-signin/signin': typeof BeforeSigninSigninRoute
   '/_before-signin/signup': typeof BeforeSigninSignupRoute
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
-  '/_authorized/note/$noteId': typeof AuthorizedNoteNoteIdRouteRoute
+  '/_authorized/note/$noteId': typeof AuthorizedNoteNoteIdRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
 }
 export interface FileRouteTypes {
@@ -224,7 +223,7 @@ declare module '@tanstack/solid-router' {
       id: '/_authorized/note/$noteId'
       path: '/note/$noteId'
       fullPath: '/note/$noteId'
-      preLoaderRoute: typeof AuthorizedNoteNoteIdRouteRouteImport
+      preLoaderRoute: typeof AuthorizedNoteNoteIdRouteImport
       parentRoute: typeof AuthorizedRoute
     }
     '/api/auth/$': {
@@ -320,12 +319,12 @@ declare module '@tanstack/solid-start/server' {
 
 interface AuthorizedRouteChildren {
   AuthorizedNotesRoute: typeof AuthorizedNotesRoute
-  AuthorizedNoteNoteIdRouteRoute: typeof AuthorizedNoteNoteIdRouteRoute
+  AuthorizedNoteNoteIdRoute: typeof AuthorizedNoteNoteIdRoute
 }
 
 const AuthorizedRouteChildren: AuthorizedRouteChildren = {
   AuthorizedNotesRoute: AuthorizedNotesRoute,
-  AuthorizedNoteNoteIdRouteRoute: AuthorizedNoteNoteIdRouteRoute,
+  AuthorizedNoteNoteIdRoute: AuthorizedNoteNoteIdRoute,
 }
 
 const AuthorizedRouteWithChildren = AuthorizedRoute._addFileChildren(
